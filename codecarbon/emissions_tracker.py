@@ -718,7 +718,7 @@ class BaseEmissionsTracker(ABC):
                 + f"W during {last_duration:,.2f} s [measurement time: {h_time:,.4f}]"
             )
         logger.info(
-            f"{self._total_energy.kWh:.6f} kWh of electricity used since the beginning."
+            f"{self._total_energy.kWh:.20f} kWh of electricity used since the beginning."
         )
 
     def _measure_power_and_energy(self) -> None:
@@ -746,7 +746,7 @@ class BaseEmissionsTracker(ABC):
             if self._measure_occurrence >= self._api_call_interval:
                 emissions = self._prepare_emissions_data(delta=True)
                 logger.info(
-                    f"{emissions.emissions_rate * 1000:.6f} g.CO2eq/s mean an estimation of "
+                    f"{emissions.emissions_rate * 1000:.20f} g.CO2eq/s mean an estimation of "
                     + f"{emissions.emissions_rate * 3600 * 24 * 365:,} kg.CO2eq/year"
                 )
                 if self._cc_api__out:
