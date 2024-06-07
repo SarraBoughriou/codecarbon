@@ -112,6 +112,7 @@ class DataSource:
         """
         with open(self.carbon_intensity_per_source_path) as f:
             carbon_intensity_per_source: Dict = json.load(f)
+        print(f"Loaded Carbon Intensity per Source Data: {carbon_intensity_per_source}")
         return carbon_intensity_per_source
 
     def get_cpu_power_data(self) -> pd.DataFrame:
