@@ -271,18 +271,19 @@ class BaseEmissionsTracker(ABC):
         self._tasks: Dict[str, Task] = {}
         self._active_task: Optional[str] = None
 
-        # If _gpu_ids is a string or a list of int, parse it to a list of ints
-        if isinstance(self._gpu_ids, str) or (
-            isinstance(self._gpu_ids, list)
-            and all(isinstance(gpu_id, int) for gpu_id in self._gpu_ids)
-        ):
-            self._gpu_ids: List[int] = parse_gpu_ids(self._gpu_ids)
-            self._conf["gpu_ids"] = self._gpu_ids
-            self._conf["gpu_count"] = len(self._gpu_ids)
-        else:
-            logger.warning(
-                "Invalid gpu_ids format. Expected a string or a list of ints."
-            )
+        if self._gpu_ids:
+            # If _gpu_ids is a string or a list of int, parse it to a list of ints
+            if isinstance(self._gpu_ids, str) or (
+                isinstance(self._gpu_ids, list)
+                and all(isinstance(gpu_id, int) for gpu_id in self._gpu_ids)
+            ):
+                self._gpu_ids: List[int] = parse_gpu_ids(self._gpu_ids)
+                self._conf["gpu_ids"] = self._gpu_ids
+                self._conf["gpu_count"] = len(self._gpu_ids)
+            else:
+                logger.warning(
+                    "Invalid gpu_ids format. Expected a string or a list of ints."
+                )
 
         logger.info("[setup] RAM Tracking...")
         ram = RAM(tracking_mode=self._tracking_mode)
@@ -718,7 +719,7 @@ class BaseEmissionsTracker(ABC):
                 + f"W during {last_duration:,.2f} s [measurement time: {h_time:,.4f}]"
             )
         logger.info(
-            f"{self._total_energy.kWh:.20f} kWh of electricity used since the beginning."
+            f"{self._total_energy.kWh:.6f} kWh of electricity used since the beginning."
         )
 
     def _measure_power_and_energy(self) -> None:
@@ -746,7 +747,7 @@ class BaseEmissionsTracker(ABC):
             if self._measure_occurrence >= self._api_call_interval:
                 emissions = self._prepare_emissions_data(delta=True)
                 logger.info(
-                    f"{emissions.emissions_rate * 1000:.20f} g.CO2eq/s mean an estimation of "
+                    f"{emissions.emissions_rate * 1000:.6f} g.CO2eq/s mean an estimation of "
                     + f"{emissions.emissions_rate * 3600 * 24 * 365:,} kg.CO2eq/year"
                 )
                 if self._cc_api__out:
