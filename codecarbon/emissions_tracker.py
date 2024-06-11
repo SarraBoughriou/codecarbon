@@ -577,7 +577,7 @@ class BaseEmissionsTracker(ABC):
 
     def _prepare_emissions_data(self, delta=False) -> EmissionsData:
         """
-        :delta: If 'True', return only the delta comsumption since the last call.
+        :delta: If 'True', return only the delta consumption since the last call.
         """
         cloud: CloudMetadata = self._get_cloud_metadata()
         duration: Time = Time.from_seconds(time.time() - self._start_time)
@@ -602,9 +602,7 @@ class BaseEmissionsTracker(ABC):
             on_cloud = "Y"
             cloud_provider = cloud.provider
             cloud_region = cloud.region
-        # Print the carbon intensity values
-    ci_value = self._emissions.get_carbon_intensity()
-    print(f"Carbon Intensity (CI) value used: {ci_value} gCO2eq/kWh")
+
         total_emissions = EmissionsData(
             timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
             project_name=self._project_name,
@@ -650,6 +648,7 @@ class BaseEmissionsTracker(ABC):
                 # TODO : the API call succeeded
                 self._previous_emissions = total_emissions
                 total_emissions = delta_emissions
+
         logger.debug(total_emissions)
         return total_emissions
 
