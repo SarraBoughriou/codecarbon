@@ -602,6 +602,9 @@ class BaseEmissionsTracker(ABC):
             on_cloud = "Y"
             cloud_provider = cloud.provider
             cloud_region = cloud.region
+        # Print the carbon intensity values
+    ci_value = self._emissions.get_carbon_intensity()
+    print(f"Carbon Intensity (CI) value used: {ci_value} gCO2eq/kWh")
         total_emissions = EmissionsData(
             timestamp=datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
             project_name=self._project_name,
