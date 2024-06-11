@@ -662,6 +662,8 @@ class BaseEmissionsTracker(ABC):
     def _get_cloud_metadata(self) -> CloudMetadata:
         """
         :return: Metadata containing cloud info
+
+    
         """
 
     def _do_measurements(self) -> None:
